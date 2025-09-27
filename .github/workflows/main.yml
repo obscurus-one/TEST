@@ -1,7 +1,7 @@
 name: Download and Upload Release
 
 on:
-  workflow_dispatch:  # Jalankan manual dari GitHub UI
+  workflow_dispatch:
 
 jobs:
   release:
@@ -12,34 +12,29 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download file
+        id: download
         run: |
-          url="https://phoenixnap.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1"   # Ganti dengan URL file kamu
-          output="downloads/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip"          # Nama file hasil download
+          url="https://example.com/path/to/file.zip"   # 🔧 Ganti URL file di sini
+          filename=$(basename "$url")                  # Ambil nama file otomatis
+          mkdir -p downloads
+          wget -O "downloads/$filename" "$url"
+          echo "filename=$filename" >> $GITHUB_OUTPUT
 
-          mkdir -p $(dirname "$output")
-          wget -O "$output" "$url"
-          
-      - name: Create tag
+      - name: Create and push tag
         run: |
           tag="v$(date +'%Y%m%d-%H%M')"
           echo "tag=$tag" >> $GITHUB_ENV
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag $tag
           git push origin $tag
 
       - name: Create GitHub Release
-        id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          draft: false
-          prerelease: false
           tag_name: ${{ env.tag }}
           name: "Release ${{ env.tag }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload asset to Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: downloads/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip
+          files: downloads/${{ steps.download.outputs.filename }}
+          overwrite_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
