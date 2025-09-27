@@ -12,13 +12,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download file
-        id: download
         run: |
           url="https://phoenixnap.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1"   # 🔧 Ganti URL file di sini
-          filename=$(basename "$url")                  # Ambil nama file otomatis
-          mkdir -p downloads
-          wget -O "downloads/$filename" "$url"
-          echo "filename=$filename" >> $GITHUB_OUTPUT
+          output="downloads/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip"          # 🔧 Nama file manual
+          mkdir -p $(dirname "$output")
+          wget -O "$output" "$url"
 
       - name: Create and push tag
         run: |
@@ -34,7 +32,7 @@ jobs:
         with:
           tag_name: ${{ env.tag }}
           name: "Release ${{ env.tag }}"
-          files: downloads/${{ steps.download.outputs.filename }}
+          files: downloads/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip
           overwrite_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
