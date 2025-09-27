@@ -1,17 +1,38 @@
-name: Android CI
+name: Download and Upload Release
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_dispatch:  # Jalankan manual dari GitHub UI
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Download Test
-      run: wget https://phoenixnap.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1 -O xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip
+      - name: Download file
+        run: |
+          url="https://phoenixnap.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1"   # Ganti dengan URL file kamu
+          output="downloads/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip"          # Nama file hasil download
+
+          mkdir -p $(dirname "$output")
+          wget -O "$output" "$url"
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0   # Ganti dengan tag release yang diinginkan
+          name: "Release v1.0.0"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload asset to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: downloads/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
