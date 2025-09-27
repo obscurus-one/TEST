@@ -1,0 +1,17 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download Test
+      run: wget https://phoenixnap.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1 -O xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip
