@@ -14,7 +14,7 @@ jobs:
       - name: Download file
         id: download
         run: |
-          url="https://example.com/path/to/file.zip"   # 🔧 Ganti URL file di sini
+          url="https://phoenixnap.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1"   # 🔧 Ganti URL file di sini
           filename=$(basename "$url")                  # Ambil nama file otomatis
           mkdir -p downloads
           wget -O "downloads/$filename" "$url"
