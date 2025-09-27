@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Minta input URL
-read -p "Masukkan URL file: " url
-read -p "Masukkan nama output file (dengan path): " output
+# Atur URL file dan nama output di sini
+url="https://onboardcloud.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1"
+output="download/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip"
 
 # Buat folder output jika belum ada
 outdir=$(dirname "$output")
