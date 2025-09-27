@@ -26,5 +26,7 @@ jobs:
       - uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
-      - name: Download Test
-        run: wget https://phoenixnap.dl.sourceforge.net/project/xiaomi-eu-multilang-miui-roms/xiaomi.eu/HyperOS-STABLE-RELEASES/HyperOS2.0/xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip?viasf=1 -O xiaomi.eu_ONYX_OS2.0.214.0.VOLCNXM_15.zip
+      - name: Set Permission
+        run: chmod +x download.sh
+      - name: Running Script
+        run: ./download.sh
