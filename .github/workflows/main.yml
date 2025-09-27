@@ -18,6 +18,13 @@ jobs:
 
           mkdir -p $(dirname "$output")
           wget -O "$output" "$url"
+          
+      - name: Create tag
+        run: |
+          tag="v$(date +'%Y%m%d-%H%M')"
+          echo "tag=$tag" >> $GITHUB_ENV
+          git tag $tag
+          git push origin $tag
 
       - name: Create GitHub Release
         id: create_release
